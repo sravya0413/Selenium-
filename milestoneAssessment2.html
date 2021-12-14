@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>EAS</title>
+    <style type="text/css">
+		table{
+		  border: 3px solid black;
+		  align-content: center;
+		  padding: 3px;
+		}
+		th{
+		  border: 2px solid black;
+		  align-content: center;
+		  color: black;
+		  padding: 10px;
+		  margin: 10px;
+		}
+		tr, td{
+		  border: 2px solid black;
+		  align-content: center;
+		  text-align: center;
+		  padding: 2px;
+		}
+		body{
+			margin: auto;
+			max-width: 700px;
+		}
+	</style>
+	<script type="text/javascript"></script>
+</head>
+    
+<body id = "body">
+	<h1>Employee Application System</h1>
+	<br>
+
+	<form id="reg">
+		<label>Full Name * </label>
+		<input id="FirstName" type="text" name="Name" required>
+		<input id="SecondName" type="text" name="Name" required>
+		<input id="LastName" type="text" name="Name" required>
+
+		<br>
+		<label style="margin-left: 95px; color:gray">First Name</label>
+		<label style="margin-left: 100px;color: gray">Middle Name</label>
+		<label style="margin-left: 100px; color: gray">Last Name</label>
+
+		<br><br>
+
+		<label>Address</label>
+
+		<input style="margin-left: 30px" type="text" name="AddressOne" id="Address1">
+		<br>
+		<label style="margin-left: 88px; color: gray">Street Address</label>
+
+		<br><br>
+
+		<input style="margin-left: 88px" type="text" name="AddressTwo" id="Address2">
+		<br>
+		<label style="margin-left: 88px; color: gray">Street Address Line 2</label>
+
+		<br><br>
+
+		<input style="margin-left: 88px" type="text" name="City" id="City">
+
+		<input type="text" name="State" id="State">
+		<br>
+		<label style="margin-left: 88px; color: gray">City</label>
+		<label style="margin-left: 155px;color: gray">State / Province</label>
+
+		<br><br>
+
+		<input style="margin-left: 88px" type="Number" name="City" id="Postal">
+
+		<select name="Country" >
+		  <option value="United States">United States</option>
+		  <option value="India">India</option>
+		  <option value="England">England</option>
+		  <option value="Australia">Australia</option>
+		  <option value="Japan">Japan</option>
+		</select>
+		<br>
+		<label style="margin-left: 88px;color: gray">Postal / Zip Code</label>
+		<label style="margin-left: 75px;color: gray">Country</label>
+
+		<br><br>
+
+		<label>Are You a U.S. </label>
+		<input style="margin-left: 30px" type="radio" name="Citizen" value="Yes"> <label>Yes</label> 
+		<br>
+		<label>Citizen?</label>
+		<input style="margin-left: 74px" type="radio" name="Citizen" value="No"> <label>No</label> 
+
+		<br><br>
+
+		<button type="button" onclick=addaRow() >Submit</button>
+
+		
+
+	</form>
+
+	<br>
+	<h2>Application Details:</h2>
+	<table id="table" >
+	  <tr>
+	    <th>First Name</th>
+	    <th>Country</th>
+	    <th>City</th>
+	    <th>US Citizen?</th>
+	  </tr>
+	</table>
+	<br><br>
+
+	<button type="button" onclick=countApplicants() >Count</button>
+	<br><br>
+
+	<h1>___________________________</h1>
+
+
+
+
+
+	<script type="text/javascript">
+
+		function addaRow() {
+			var form = document.getElementById("reg");
+			var firstName = document.getElementById("FirstName").value;
+			var secondName = document.getElementById("SecondName").value;
+			var thirdName = document.getElementById("LastName").value;
+			var Citizen = document.querySelector('input[name="Citizen"]:checked').value;  
+			var country = form.elements["Country"].value;
+			var City = document.getElementById("City").value;
+			if(checkName(firstName) == true){
+				if(checkName(secondName) == true){
+					if(checkName(thirdName) == true){
+
+						var tr = document.createElement('tr');
+			        	var td = tr.appendChild(document.createElement('td'));
+			        	td.innerHTML = firstName; 
+			        	var td1 = tr.appendChild(document.createElement('td'));
+			        	td1.innerHTML = country;
+			        	var td2 = tr.appendChild(document.createElement('td'));
+			        	td2.innerHTML = City;
+			        	
+			        	var td3 = tr.appendChild(document.createElement('td'));
+			        	td3.innerHTML = Citizen;
+			        	if(City.toUpperCase() == "BANGALORE" && Citizen == "No"){
+			        		tr.style.backgroundColor = "#90EE90";
+			        	}
+			        	if(City.toUpperCase() == "WASHINGTON DC"){
+			        		td2.style.color = "red";
+			        	}
+			        	document.getElementById("table").appendChild(tr);
+
+			        	updateCount(Citizen);
+
+					}else{
+						alert("Last Name can contain only alphabets, .(dot) and –(hyphen)");
+					}
+
+				}else{
+					alert("Middle Name can contain only alphabets, .(dot) and –(hyphen)");
+				}
+
+			}else{
+				alert("First Name can contain only alphabets, .(dot) and –(hyphen)");
+			}
+			
+		};
+
+		function checkName( name) {
+			if(name == null || name == ""){
+				return false;
+			}
+			for(var i=0; i<name.length; i++){
+				if(name[i] != " " && name[i] != "." && name[i] != "-" ){
+					if( (name[i] >= "a" && name[i] <= "z") || (name[i] >= "A" && name[i] <= "Z") ){
+						//dp
+					}else{
+						return false;
+					}
+				}
+			}
+			return true;
+		};
+
+		const counts = new Map();
+
+		function updateCount(Citizen) {
+			if(counts.has(Citizen) == true){
+				counts.set(Citizen, counts.get(Citizen)+1 );
+			}else{
+				counts.set(Citizen, 1 );
+			}
+		};
+
+		function countApplicants() {
+			var str = "Count of application we got from countries other than United States are = " + counts.get("No");
+			alert(str);
+		}
+		
+	</script>
+
+
+</body>
+</html>
